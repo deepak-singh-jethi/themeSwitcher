@@ -10,7 +10,7 @@ function Login({ changePage }) {
 
   const [message, setMessage] = useState("");
 
-  const { user, setUser, isValid, setIsValid } = useContext(userContext);
+  const { setUser, setIsValid } = useContext(userContext);
 
   const { theme } = useContext(themeContext);
   const { color, backgroundColor } = theme;
@@ -24,11 +24,15 @@ function Login({ changePage }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (loginInfo.email === "" || !loginInfo.email.includes("@")) {
+    if (
+      loginInfo.email === "" ||
+      !loginInfo.email.includes("@") ||
+      !localStorage.getItem("user")
+    ) {
       setMessage("Valid Email is required");
       return;
     }
-    //match login detail with local storage
+
     const user = JSON.parse(localStorage.getItem("user"));
     if (
       user.email === loginInfo.email &&
